@@ -5202,7 +5202,6 @@ resolution-markers = [
 ]
 dependencies = [
     { name = "pytest", version = "9.0.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.13.2'" },
-    { name = "typing-extensions", marker = "python_version < '0'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/90/2c/8af215c0f776415f3590cac4f9086ccefd6fd463befeae41cd4d3f193e5a/pytest_asyncio-1.3.0.tar.gz", hash = "sha256:d7f52f36d231b80ee124cd216ffb19369aa168fc10095013c6b014a34d3ee9e5", size = 50087, upload-time = "2025-11-10T16:07:47.256Z" }
 wheels = [
@@ -6525,17 +6524,8 @@ wheels = [
 
 [[package]]
 name = "stewart-filmscreen"
-source = { editable = "../py-stewart-filmscreen" }
-
-[package.metadata]
-
-[package.metadata.requires-dev]
-dev = [
-    { name = "pytest", specifier = ">=8.3.0" },
-    { name = "pytest-asyncio", specifier = ">=1.1.0" },
-    { name = "ruff", specifier = ">=0.13.0" },
-    { name = "ty" },
-]
+version = "0.1.0"
+source = { git = "https://github.com/binarylogic/py-stewart-filmscreen.git?tag=v0.1.0#53aa97cd9f0bf450deb9ec1ed0864a2a64e467c1" }
 
 [[package]]
 name = "stewart-filmscreen-homeassistant"
@@ -6567,7 +6557,7 @@ dev = [
 ]
 
 [package.metadata]
-requires-dist = [{ name = "stewart-filmscreen", editable = "../py-stewart-filmscreen" }]
+requires-dist = [{ name = "stewart-filmscreen", git = "https://github.com/binarylogic/py-stewart-filmscreen.git?tag=v0.1.0" }]
 
 [package.metadata.requires-dev]
 dev = [

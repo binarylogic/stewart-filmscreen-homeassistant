@@ -19,7 +19,7 @@ dev = [
 
 [tool.uv]
 package = false
-sources = { stewart-filmscreen = { path = "../py-stewart-filmscreen", editable = true } }
+sources = { stewart-filmscreen = { git = "https://github.com/binarylogic/py-stewart-filmscreen.git", tag = "v0.1.0" } }
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
