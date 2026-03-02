@@ -1,0 +1,38 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Stewart Filmscreen",
+        "description": "Enter connection settings.",
+        "data": {
+          "host": "Host",
+          "port": "Port",
+          "username": "Username",
+          "password": "Password"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Failed to connect",
+      "invalid_auth": "Invalid authentication",
+      "unknown": "Unexpected error"
+    },
+    "abort": {
+      "already_configured": "Device is already configured"
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Motor direction",
+        "description": "Set inversion per motor if open/close direction is reversed.",
+        "data": {
+          "invert_a": "Invert motor A",
+          "invert_b": "Invert motor B",
+          "invert_c": "Invert motor C",
+          "invert_d": "Invert motor D"
+        }
+      }
+    }
+  }
+}

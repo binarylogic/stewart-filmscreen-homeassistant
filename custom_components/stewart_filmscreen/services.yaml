@@ -1,0 +1,27 @@
+recall_preset:
+  name: Recall preset
+  description: Recall a saved masking preset for all motors.
+  fields:
+    preset_number:
+      name: Preset number
+      description: Preset index to recall.
+      required: true
+      selector:
+        number:
+          min: 1
+          max: 32
+          step: 1
+
+store_preset:
+  name: Store preset
+  description: Save current motor positions into a masking preset.
+  fields:
+    preset_number:
+      name: Preset number
+      description: Preset index to overwrite.
+      required: true
+      selector:
+        number:
+          min: 1
+          max: 32
+          step: 1
