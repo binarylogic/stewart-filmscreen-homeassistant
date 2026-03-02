@@ -42,7 +42,9 @@ def _get_required_real_target() -> tuple[str, int, str, str]:
 
 async def _is_reachable(host: str, port: int, timeout: float) -> bool:
     try:
-        _reader, writer = await asyncio.wait_for(asyncio.open_connection(host=host, port=port), timeout=timeout)
+        _reader, writer = await asyncio.wait_for(
+            asyncio.open_connection(host=host, port=port), timeout=timeout
+        )
     except (TimeoutError, OSError):
         return False
 
