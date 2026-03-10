@@ -4,7 +4,7 @@ version = "0.1.0"
 description = "Home Assistant integration for Stewart Filmscreen CVM"
 requires-python = ">=3.11"
 dependencies = [
-  "stewart-filmscreen>=0.1.0",
+  "stewart-filmscreen>=0.1.1",
 ]
 
 [dependency-groups]
@@ -19,7 +19,7 @@ dev = [
 
 [tool.uv]
 package = false
-sources = { stewart-filmscreen = { git = "https://github.com/binarylogic/py-stewart-filmscreen.git", tag = "v0.1.0" } }
+sources = { stewart-filmscreen = { git = "https://github.com/binarylogic/py-stewart-filmscreen.git", tag = "v0.1.1" } }
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
