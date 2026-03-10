@@ -38,6 +38,69 @@ If HACS has not synced the default index update yet, temporarily add it as a cus
 2. Add `https://github.com/binarylogic/stewart-filmscreen-homeassistant` as category `Integration`.
 3. Refresh HACS and install as above.
 
+## Using Presets In Home Assistant
+
+Stewart CVM presets are exposed as Home Assistant services.
+
+The integration does not assume preset names like `16:9` or `Scope`, because those meanings are installation-specific. The controller provides numbered preset slots, and you decide what each slot represents in your theater.
+
+Use these services:
+
+- `stewart_filmscreen.recall_preset`
+- `stewart_filmscreen.store_preset`
+
+Service data:
+
+```yaml
+preset_number: 1-32
+```
+
+Example service call:
+
+```yaml
+service: stewart_filmscreen.recall_preset
+data:
+  preset_number: 2
+```
+
+Example script:
+
+```yaml
+script:
+  mask_scope:
+    alias: Mask Scope
+    sequence:
+      - service: stewart_filmscreen.recall_preset
+        data:
+          preset_number: 2
+```
+
+Example dashboard button:
+
+```yaml
+type: button
+name: Mask Scope
+icon: mdi:movie-open
+tap_action:
+  action: call-service
+  service: stewart_filmscreen.recall_preset
+  data:
+    preset_number: 2
+```
+
+Example save/store call:
+
+```yaml
+service: stewart_filmscreen.store_preset
+data:
+  preset_number: 2
+```
+
+Recommended pattern:
+
+- Use the cover entities for manual per-motor movement.
+- Use preset service calls, scripts, dashboard buttons, or automations for named masking modes.
+
 ## Real Device Integration Tests (Read-Only)
 
 Use this when you want to validate against a real CVM that may or may not be online.
