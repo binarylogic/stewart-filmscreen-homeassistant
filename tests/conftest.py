@@ -56,6 +56,8 @@ def mock_stewart_client() -> MagicMock:
     client.stop_client = AsyncMock()
     client.register_callback = MagicMock()
     client.deregister_callback = MagicMock()
+    client.register_connection_callback = MagicMock()
+    client.deregister_connection_callback = MagicMock()
     client.send_command = AsyncMock()
     client.recall_preset = AsyncMock()
     client.store_preset = AsyncMock()

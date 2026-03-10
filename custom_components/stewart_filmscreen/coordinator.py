@@ -10,6 +10,7 @@ from homeassistant.core import HomeAssistant
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
 
 from stewart_filmscreen.client import StewartFilmscreenClient
+from stewart_filmscreen.exceptions import AuthenticationError, ConnectionFailedError
 from stewart_filmscreen.models import ProtocolMessage
 
 from .models import MotorState, StewartFilmscreenState
@@ -31,15 +32,24 @@ class StewartFilmscreenCoordinator(DataUpdateCoordinator[StewartFilmscreenState]
             return
         self._running = True
         self.client.register_callback(self._handle_message)
-        await self.client.start()
-        await self.client.wait_authenticated(timeout=auth_timeout)
-        self._state.authenticated = True
+        self.client.register_connection_callback(self._handle_connection_event)
         self.async_set_updated_data(self._snapshot())
+        await self.client.start()
+        try:
+            await self.client.wait_authenticated(timeout=auth_timeout)
+        except (TimeoutError, AuthenticationError, ConnectionFailedError):
+            self.logger.warning(
+                "Initial Stewart Filmscreen bootstrap failed; keeping integration loaded and waiting for reconnect."
+            )
+        else:
+            self._state.authenticated = True
+            self.async_set_updated_data(self._snapshot())
 
     async def async_shutdown(self) -> None:
         if not self._running:
             return
         self.client.deregister_callback(self._handle_message)
+        self.client.deregister_connection_callback(self._handle_connection_event)
         await self.client.stop_client()
         self._running = False
 
@@ -56,4 +66,14 @@ class StewartFilmscreenCoordinator(DataUpdateCoordinator[StewartFilmscreenState]
                 motor.position = int(round(float(msg.value)))
         if msg.kind == "event" and msg.name == "STATUS" and msg.value is not None:
             motor.status = msg.value
+        self.async_set_updated_data(self._snapshot())
+
+    async def _handle_connection_event(self, event: str) -> None:
+        if event == "connected":
+            self._state.authenticated = True
+        elif event == "disconnected":
+            self._state.authenticated = False
+        else:
+            return
+
         self.async_set_updated_data(self._snapshot())
