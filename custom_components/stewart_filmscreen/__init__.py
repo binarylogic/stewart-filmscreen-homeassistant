@@ -28,7 +28,11 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         password=str(entry.data[CONF_PASSWORD]),
     )
     coordinator = StewartFilmscreenCoordinator(hass, client)
-    await coordinator.async_start()
+    try:
+        await coordinator.async_start()
+    except Exception:
+        await coordinator.async_shutdown()
+        raise
 
     hass.data.setdefault(DOMAIN, {})[entry.entry_id] = StewartFilmscreenIntegrationData(
         client=client, coordinator=coordinator
@@ -54,3 +58,8 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
             async_unload_services(hass)
             hass.data.pop(DOMAIN, None)
     return unload_ok
+
+
+async def async_reload_entry(hass: HomeAssistant, entry: ConfigEntry) -> None:
+    """Reload a config entry."""
+    await hass.config_entries.async_reload(entry.entry_id)
