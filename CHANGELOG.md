@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.5](https://github.com/binarylogic/stewart-filmscreen-homeassistant/compare/v0.1.4...v0.1.5) (2026-04-07)
+
+
+### Bug Fixes
+
+* simplify cover state and preset controls ([25b8fb0](https://github.com/binarylogic/stewart-filmscreen-homeassistant/commit/25b8fb087882cfe13bf0e9ccd83df73a087a31ed))
+
 ## [0.1.4](https://github.com/binarylogic/stewart-filmscreen-homeassistant/compare/v0.1.3...v0.1.4) (2026-03-10)
 
 
