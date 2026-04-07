@@ -57,7 +57,9 @@ async def test_cover_reports_inverted_position_and_motion(
 ) -> None:
     """Test inverted motor mapping flips both state and commands."""
     mock_config_entry.add_to_hass(hass)
-    hass.config_entries.async_update_entry(mock_config_entry, options={"invert_a": True})
+    hass.config_entries.async_update_entry(
+        mock_config_entry, options={"invert_a": True}
+    )
 
     assert await hass.config_entries.async_setup(mock_config_entry.entry_id)
     await hass.async_block_till_done()
