@@ -59,6 +59,7 @@ def mock_stewart_client() -> MagicMock:
     client.register_connection_callback = MagicMock()
     client.deregister_connection_callback = MagicMock()
     client.send_command = AsyncMock()
+    client.query_position = AsyncMock()
     client.recall_preset = AsyncMock()
     client.store_preset = AsyncMock()
     return client
@@ -124,7 +125,7 @@ async def real_client() -> AsyncGenerator[StewartFilmscreenClient, None]:
         username=username,
         password=password,
         reconnect_seconds=2.0,
-        command_throttle_seconds=0.1,
+        command_throttle_seconds=1.0,
     )
 
     await client.start()

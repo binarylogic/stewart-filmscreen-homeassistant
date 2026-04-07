@@ -15,6 +15,8 @@ from stewart_filmscreen.const import (
     MOTOR_B,
     MOTOR_C,
     MOTOR_D,
+    STATUS_EXTENDING,
+    STATUS_RETRACTING,
 )
 
 from .const import CONF_INVERT_A, CONF_INVERT_B, CONF_INVERT_C, CONF_INVERT_D, DOMAIN
@@ -49,10 +51,7 @@ class StewartFilmscreenCover(StewartFilmscreenEntity, CoverEntity):
     """Cover entity for a single CVM motor."""
 
     _attr_supported_features = (
-        CoverEntityFeature.OPEN
-        | CoverEntityFeature.CLOSE
-        | CoverEntityFeature.STOP
-        | CoverEntityFeature.SET_POSITION
+        CoverEntityFeature.OPEN | CoverEntityFeature.CLOSE | CoverEntityFeature.STOP
     )
 
     def __init__(
@@ -73,8 +72,7 @@ class StewartFilmscreenCover(StewartFilmscreenEntity, CoverEntity):
         motor = self.coordinator.data.motors.get(self._motor)
         if motor is None or motor.position is None:
             return None
-        # CVM reports percent extension, HA cover expects open percentage.
-        return max(0, min(100, 100 - motor.position))
+        return self._ha_position_from_motor_position(motor.position)
 
     @property
     def is_closed(self) -> bool | None:
@@ -83,16 +81,27 @@ class StewartFilmscreenCover(StewartFilmscreenEntity, CoverEntity):
             return None
         return pos == 0
 
-    async def async_set_cover_position(self, **kwargs) -> None:
-        # CVM protocol has no direct absolute set position command in documented subset.
-        # Keep deterministic behavior and rely on presets for absolute movements.
-        target = kwargs.get("position")
-        if target is None:
-            return
-        if int(target) <= 0:
-            await self.async_close_cover()
-        elif int(target) >= 100:
-            await self.async_open_cover()
+    @property
+    def is_opening(self) -> bool | None:
+        status = self._motor_status
+        if status is None:
+            return None
+        if status == STATUS_RETRACTING:
+            return not self._invert
+        if status == STATUS_EXTENDING:
+            return self._invert
+        return False
+
+    @property
+    def is_closing(self) -> bool | None:
+        status = self._motor_status
+        if status is None:
+            return None
+        if status == STATUS_EXTENDING:
+            return not self._invert
+        if status == STATUS_RETRACTING:
+            return self._invert
+        return False
 
     async def async_open_cover(self, **kwargs) -> None:
         command = COMMAND_DOWN if self._invert else COMMAND_UP
@@ -104,3 +113,14 @@ class StewartFilmscreenCover(StewartFilmscreenEntity, CoverEntity):
 
     async def async_stop_cover(self, **kwargs) -> None:
         await self._client.send_command(self._motor, COMMAND_STOP)
+
+    @property
+    def _motor_status(self) -> str | None:
+        motor = self.coordinator.data.motors.get(self._motor)
+        return None if motor is None else motor.status
+
+    def _ha_position_from_motor_position(self, motor_position: int) -> int:
+        bounded_position = max(0, min(100, motor_position))
+        if self._invert:
+            return bounded_position
+        return 100 - bounded_position

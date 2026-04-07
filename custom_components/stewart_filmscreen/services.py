@@ -9,12 +9,20 @@ from homeassistant.helpers import config_validation as cv
 from .const import (
     ATTR_PRESET_NUMBER,
     DOMAIN,
+    MAX_PRESET_NUMBER,
+    MIN_PRESET_NUMBER,
     SERVICE_RECALL_PRESET,
     SERVICE_STORE_PRESET,
 )
 from .models import StewartFilmscreenIntegrationData
 
-SERVICE_SCHEMA = vol.Schema({vol.Required(ATTR_PRESET_NUMBER): cv.positive_int})
+SERVICE_SCHEMA = vol.Schema(
+    {
+        vol.Required(ATTR_PRESET_NUMBER): vol.All(
+            cv.positive_int, vol.Range(min=MIN_PRESET_NUMBER, max=MAX_PRESET_NUMBER)
+        )
+    }
+)
 
 
 async def async_setup_services(hass: HomeAssistant) -> None:

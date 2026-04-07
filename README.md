@@ -15,6 +15,7 @@ Release notes and compatibility updates are tracked in this repository.
 ## Features
 
 - Cover entities for motors A/B/C/D
+- Recall preset buttons for slots 1-32
 - `recall_preset` service
 - `store_preset` service
 - Automatic reconnect and push updates
@@ -99,7 +100,9 @@ data:
 Recommended pattern:
 
 - Use the cover entities for manual per-motor movement.
-- Use preset service calls, scripts, dashboard buttons, or automations for named masking modes.
+- Use preset buttons or preset service calls for named masking modes.
+- Command pacing is handled by the underlying `stewart-filmscreen` client so the integration does not need to implement protocol-specific rate limiting on its own.
+- Motor inversion defaults to off for every motor and should only be enabled when a specific installation is wired opposite of HA open/close semantics.
 
 ## Real Device Integration Tests (Read-Only)
 

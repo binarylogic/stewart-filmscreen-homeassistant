@@ -32,6 +32,7 @@ async def test_setup_and_unload_entry(
     mock_stewart_client.register_connection_callback.assert_called_once()
     mock_stewart_client.start.assert_called_once()
     mock_stewart_client.wait_authenticated.assert_called_once()
+    assert mock_stewart_client.query_position.await_count == 4
     assert hass.services.has_service(DOMAIN, SERVICE_RECALL_PRESET)
     assert hass.services.has_service(DOMAIN, SERVICE_STORE_PRESET)
 
@@ -108,6 +109,7 @@ async def test_connection_callbacks_refresh_entity_availability(
     state = hass.states.get("cover.screen_motor_1")
     assert state
     assert state.state != "unavailable"
+    assert mock_stewart_client.query_position.await_count == 4
 
     mock_stewart_client.connected = False
     await callback("disconnected")

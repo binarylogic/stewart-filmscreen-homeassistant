@@ -4,6 +4,8 @@ from __future__ import annotations
 
 DOMAIN = "stewart_filmscreen"
 CLIENT_ID = "homeassistant"
+MIN_PRESET_NUMBER = 1
+MAX_PRESET_NUMBER = 32
 
 CONF_INVERT_A = "invert_a"
 CONF_INVERT_B = "invert_b"
@@ -17,4 +19,4 @@ ATTR_PRESET_NUMBER = "preset_number"
 ATTR_MANUFACTURER = "Stewart Filmscreen"
 ATTR_MODEL = "CVM"
 
-PLATFORMS = ["cover"]
+PLATFORMS = ["button", "cover"]

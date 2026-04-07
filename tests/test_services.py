@@ -2,6 +2,9 @@
 
 from __future__ import annotations
 
+import pytest
+from voluptuous.error import MultipleInvalid
+
 from custom_components.stewart_filmscreen.const import (
     ATTR_PRESET_NUMBER,
     DOMAIN,
@@ -51,3 +54,32 @@ async def test_services_dispatch_to_registered_entries(
 
     mock_stewart_client.recall_preset.assert_awaited_once_with(2)
     mock_stewart_client.store_preset.assert_awaited_once_with(3)
+
+
+async def test_services_reject_out_of_range_presets(
+    hass, mock_config_entry, mock_setup_entry, mock_stewart_client
+) -> None:
+    """Test domain services enforce documented preset bounds."""
+    mock_config_entry.add_to_hass(hass)
+
+    assert await hass.config_entries.async_setup(mock_config_entry.entry_id)
+    await hass.async_block_till_done()
+
+    with pytest.raises(MultipleInvalid):
+        await hass.services.async_call(
+            DOMAIN,
+            SERVICE_RECALL_PRESET,
+            {ATTR_PRESET_NUMBER: 0},
+            blocking=True,
+        )
+
+    with pytest.raises(MultipleInvalid):
+        await hass.services.async_call(
+            DOMAIN,
+            SERVICE_STORE_PRESET,
+            {ATTR_PRESET_NUMBER: 33},
+            blocking=True,
+        )
+
+    mock_stewart_client.recall_preset.assert_not_awaited()
+    mock_stewart_client.store_preset.assert_not_awaited()

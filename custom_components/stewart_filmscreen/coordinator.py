@@ -10,10 +10,13 @@ from homeassistant.core import HomeAssistant
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
 
 from stewart_filmscreen.client import StewartFilmscreenClient
+from stewart_filmscreen.const import MOTOR_A, MOTOR_B, MOTOR_C, MOTOR_D
 from stewart_filmscreen.exceptions import AuthenticationError, ConnectionFailedError
 from stewart_filmscreen.models import ProtocolMessage
 
 from .models import MotorState, StewartFilmscreenState
+
+MOTORS = (MOTOR_A, MOTOR_B, MOTOR_C, MOTOR_D)
 
 
 class StewartFilmscreenCoordinator(DataUpdateCoordinator[StewartFilmscreenState]):
@@ -44,6 +47,7 @@ class StewartFilmscreenCoordinator(DataUpdateCoordinator[StewartFilmscreenState]
         else:
             self._state.authenticated = True
             self.async_set_updated_data(self._snapshot())
+            await self._async_request_positions()
 
     async def async_shutdown(self) -> None:
         if not self._running:
@@ -71,9 +75,15 @@ class StewartFilmscreenCoordinator(DataUpdateCoordinator[StewartFilmscreenState]
     async def _handle_connection_event(self, event: str) -> None:
         if event == "connected":
             self._state.authenticated = True
+            await self._async_request_positions()
         elif event == "disconnected":
             self._state.authenticated = False
         else:
             return
 
         self.async_set_updated_data(self._snapshot())
+
+    async def _async_request_positions(self) -> None:
+        """Populate initial positions through the client's throttled queue."""
+        for motor in MOTORS:
+            await self.client.query_position(motor)

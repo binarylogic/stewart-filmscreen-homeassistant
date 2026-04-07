@@ -31,9 +31,9 @@ STEP_USER_DATA_SCHEMA = vol.Schema(
 OPTIONS_SCHEMA = vol.Schema(
     {
         vol.Optional(CONF_INVERT_A, default=False): bool,
-        vol.Optional(CONF_INVERT_B, default=True): bool,
+        vol.Optional(CONF_INVERT_B, default=False): bool,
         vol.Optional(CONF_INVERT_C, default=False): bool,
-        vol.Optional(CONF_INVERT_D, default=True): bool,
+        vol.Optional(CONF_INVERT_D, default=False): bool,
     }
 )
 
