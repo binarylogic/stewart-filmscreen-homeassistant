@@ -5,7 +5,7 @@ from __future__ import annotations
 DOMAIN = "stewart_filmscreen"
 CLIENT_ID = "homeassistant"
 MIN_PRESET_NUMBER = 1
-MAX_PRESET_NUMBER = 32
+MAX_PRESET_NUMBER = 24
 
 CONF_INVERT_A = "invert_a"
 CONF_INVERT_B = "invert_b"

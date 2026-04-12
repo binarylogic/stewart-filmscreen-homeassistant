@@ -15,7 +15,7 @@ Release notes and compatibility updates are tracked in this repository.
 ## Features
 
 - Cover entities for motors A/B/C/D
-- Recall preset buttons for slots 1-32
+- Recall preset buttons for slots 1-24
 - `recall_preset` service
 - `store_preset` service
 - Automatic reconnect and push updates
@@ -53,7 +53,7 @@ Use these services:
 Service data:
 
 ```yaml
-preset_number: 1-32
+preset_number: 1-24
 ```
 
 Example service call:
