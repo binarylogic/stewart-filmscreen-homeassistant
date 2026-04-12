@@ -6524,8 +6524,8 @@ wheels = [
 
 [[package]]
 name = "stewart-filmscreen"
-version = "0.1.2"
-source = { git = "https://github.com/binarylogic/py-stewart-filmscreen.git?tag=v0.1.2#8e304b189fc1145fbe9530fe2ef8939af17abc7b" }
+version = "0.1.3"
+source = { git = "https://github.com/binarylogic/py-stewart-filmscreen.git?tag=v0.1.3#46789fd1074872800e3b12825191fcff4cfd0932" }
 
 [[package]]
 name = "stewart-filmscreen-homeassistant"
@@ -6557,7 +6557,7 @@ dev = [
 ]
 
 [package.metadata]
-requires-dist = [{ name = "stewart-filmscreen", git = "https://github.com/binarylogic/py-stewart-filmscreen.git?tag=v0.1.2" }]
+requires-dist = [{ name = "stewart-filmscreen", git = "https://github.com/binarylogic/py-stewart-filmscreen.git?tag=v0.1.3" }]
 
 [package.metadata.requires-dev]
 dev = [
