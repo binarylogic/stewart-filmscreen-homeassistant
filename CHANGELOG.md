@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.6](https://github.com/binarylogic/stewart-filmscreen-homeassistant/compare/v0.1.5...v0.1.6) (2026-04-12)
+
+
+### Bug Fixes
+
+* align preset range with cvm protocol ([2d1c4bf](https://github.com/binarylogic/stewart-filmscreen-homeassistant/commit/2d1c4bfe60ab97b34e51242c21c1f8b0c3f522c2))
+* pin stewart client release ([90201f4](https://github.com/binarylogic/stewart-filmscreen-homeassistant/commit/90201f426145e7f79c68cf68b31c446d74336979))
+
 ## [0.1.5](https://github.com/binarylogic/stewart-filmscreen-homeassistant/compare/v0.1.4...v0.1.5) (2026-04-07)
 
 
